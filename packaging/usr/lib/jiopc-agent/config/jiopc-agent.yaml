@@ -55,7 +55,7 @@ web_apps:
         description: "Search box"
       - selector: "#hplogo"
         description: "Google doodle"
-      - selector: "body > div.L3eUgb > div.o3j99.ikrT4e.KEY6ib > form > div:nth-child(1) > div > div.FPdoLc.T14B5e.iThwld > center > input.gNO89b"
+      - selector: "input[name='btnK'], input[type='submit']"
         description: "Search button"
 
   - name: YouTube
