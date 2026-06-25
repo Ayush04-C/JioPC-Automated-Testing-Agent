@@ -54,14 +54,15 @@ def _check_elements(page: Page, elements: list) -> tuple[bool, list[str]]:
         return False, missing
     return True, []
 
-def _measure_load_time(page: Page, url: str, timeout_ms: int) -> tuple[int, bool]:
+def _measure_load_time(page: Page, url: str, timeout_ms: int) -> tuple[int, bool, int]:
     start = time.time()
     try:
-        page.goto(url, wait_until="domcontentloaded", timeout=timeout_ms)
+        response = page.goto(url, wait_until="domcontentloaded", timeout=timeout_ms)
         elapsed_ms = int((time.time() - start) * 1000)
-        return elapsed_ms, False
+        status_code = response.status if response else 0
+        return elapsed_ms, False, status_code
     except PlaywrightTimeoutError:
-        return timeout_ms, True
+        return timeout_ms, True, 0
     except Exception as e:
         raise e
 
@@ -71,16 +72,17 @@ def _test_single_url(page: Page, web_app: dict) -> tuple[str, str, int]:
         url = web_app["url"]
         load_timeout_ms = web_app.get("load_timeout_ms", DEFAULT_LOAD_TIMEOUT_MS)
         
-        load_time_ms, timed_out = _measure_load_time(page, url, load_timeout_ms)
+        load_time_ms, timed_out, status_code = _measure_load_time(page, url, load_timeout_ms)
         elapsed_ms = int((time.time() - start_time) * 1000)
         
         if timed_out:
             return "FAIL", f"Page timed out after {load_timeout_ms}ms", elapsed_ms
             
+        if status_code >= 400:
+            return "FAIL", f"HTTP Error {status_code} returned", elapsed_ms
+            
         if _check_bot_detection(page):
             return "BLOCKED", "Bot detection page detected", elapsed_ms
-            
-        # Step 4: page.status not natively available on Playwright Page object. Skipped gracefully.
 
         elements = web_app.get("elements", [])
         all_found, missing = _check_elements(page, elements)
