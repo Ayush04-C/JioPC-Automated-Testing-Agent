@@ -9,12 +9,12 @@ web_apps:
     load_timeout_ms: 8000
     bot_detection_expected: true
     elements:
-      - selector: "nav"
-        description: "Navigation bar"
-      - selector: "input[type=text]"
+      - selector: "#root > div.home > header"
+        description: "Navbar"
+      - selector: "#search > div.rbt > div:nth-child(1) > input.rbt-input-main.form-control.rbt-input"
         description: "Search input"
-      - selector: "header"
-        description: "Logo area"
+      - selector: '#root > div.home > header > div > div.o-layout__item.u-1\/2\@lg.u-align-left\@sm'
+        description: "Logo"
 
   - name: JioHotstar
     url: https://www.jiohotstar.com
@@ -31,20 +31,20 @@ web_apps:
     load_timeout_ms: 8000
     bot_detection_expected: true
     elements:
-      - selector: "main"
-        description: "Main heading"
-      - selector: "button"
-        description: "Join or start meeting button"
+      - selector: "#website-header > app-website-header"
+        description: "Main header"
+      - selector: "#headerJoinMeetingButton"
+        description: "Join button"
 
   - name: JioCloud
     url: https://jiocloud.com
     load_timeout_ms: 8000
     bot_detection_expected: true
     elements:
-      - selector: "nav"
-        description: "Navigation"
-      - selector: "button"
-        description: "Login/signup button"
+      - selector: "#landing-header > div.desktop-header.m-mobile-header"
+        description: "Nav"
+      - selector: "#landing-header > div.desktop-header.m-mobile-header > div > div.col-3.pl-0.ml-0.pr-0.opt-cont > div > button"
+        description: "Login/signup"
 
   - name: Google
     url: https://www.google.com
