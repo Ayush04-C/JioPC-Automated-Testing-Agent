@@ -16,16 +16,14 @@ web_apps:
       - selector: "header"
         description: "Logo area"
 
-  - name: JioCinema
-    url: https://www.jiocinema.com
+  - name: JioHotstar
+    url: https://www.jiohotstar.com
     load_timeout_ms: 8000
     bot_detection_expected: true
     elements:
-      - selector: "header"
-        description: "Main header"
-      - selector: "[role=search]"
-        description: "Search input"
-      - selector: "[role=navigation]"
+      - selector: "#searchBar"
+        description: "Search"
+      - selector: "#page-container > div > div._3PHMluZ7H9jfd85qlO9xMYUhzbxY87069y3Cj6HtFWR > aside > nav"
         description: "Navigation"
 
   - name: JioMeet
