@@ -1,0 +1,6 @@
+Package: jiopc-testing-agent
+Version: 0.1.0
+Architecture: all
+Maintainer: Team JioPC-IIT Bombay <ayush04-c@github.com>
+Depends: python3 (>= 3.11), python3-pip, xvfb, xdg-utils, git
+Description: Automated testing agent for JioPC OS Image validation

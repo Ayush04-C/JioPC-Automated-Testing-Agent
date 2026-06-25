@@ -1,0 +1,89 @@
+agent:
+  log_dir: ~/.local/share/jiopc/agent/
+  llm_prompt_file: /usr/lib/jiopc-agent/prompts/analyse_log.txt
+  parts_order: [A, B, C]
+
+web_apps:
+  - name: JioSaavn
+    url: https://www.jiosaavn.com
+    load_timeout_ms: 10000
+    bot_detection_expected: true
+    elements:
+      - selector: "nav"
+        description: "Main navigation bar"
+      - selector: "div.play-button"
+        description: "Play button for content"
+        
+  - name: JioCinema
+    url: https://www.jiocinema.com
+    load_timeout_ms: 12000
+    bot_detection_expected: true
+    elements:
+      - selector: "header"
+        description: "Main header"
+      - selector: ".video-player"
+        description: "Video player container"
+        
+  - name: JioMeet
+    url: https://jiomeetpro.jio.com
+    load_timeout_ms: 8000
+    bot_detection_expected: true
+    elements:
+      - selector: ".join-meeting-btn"
+        description: "Join meeting button"
+      - selector: "form"
+        description: "Login form"
+        
+  - name: JioCloud
+    url: https://www.jiocloud.com
+    load_timeout_ms: 8000
+    bot_detection_expected: true
+    elements:
+      - selector: ".login-btn"
+        description: "Login button"
+        
+  - name: Google
+    url: https://www.google.com
+    load_timeout_ms: 5000
+    bot_detection_expected: false
+    elements:
+      - selector: "input[name='q']"
+        description: "Search input box"
+      - selector: "input[name='btnK']"
+        description: "Search button"
+        
+  - name: YouTube
+    url: https://www.youtube.com
+    load_timeout_ms: 8000
+    bot_detection_expected: false
+    elements:
+      - selector: "ytd-searchbox"
+        description: "Search box"
+      - selector: "video"
+        description: "Video element"
+        
+  - name: Wikipedia
+    url: https://www.wikipedia.org
+    load_timeout_ms: 4000
+    bot_detection_expected: false
+    elements:
+      - selector: "#searchInput"
+        description: "Search input"
+      - selector: ".central-textlogo"
+        description: "Wikipedia logo"
+        
+  - name: GitHub
+    url: https://github.com
+    load_timeout_ms: 6000
+    bot_detection_expected: false
+    elements:
+      - selector: "header"
+        description: "Main header"
+      - selector: "form.js-site-search-form"
+        description: "Search form"
+
+native_apps:
+  # Daksh fills this in his branch
+
+desktop_presence:
+  # Daksh fills this in his branch
