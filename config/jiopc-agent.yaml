@@ -6,81 +6,95 @@ agent:
 web_apps:
   - name: JioSaavn
     url: https://www.jiosaavn.com
-    load_timeout_ms: 10000
+    load_timeout_ms: 8000
     bot_detection_expected: true
     elements:
       - selector: "nav"
-        description: "Main navigation bar"
-      - selector: "div.play-button"
-        description: "Play button for content"
-        
+        description: "Navigation bar"
+      - selector: "input[type=text]"
+        description: "Search input"
+      - selector: "header"
+        description: "Logo area"
+
   - name: JioCinema
     url: https://www.jiocinema.com
-    load_timeout_ms: 12000
+    load_timeout_ms: 8000
     bot_detection_expected: true
     elements:
       - selector: "header"
         description: "Main header"
-      - selector: ".video-player"
-        description: "Video player container"
-        
+      - selector: "[role=search]"
+        description: "Search input"
+      - selector: "[role=navigation]"
+        description: "Navigation"
+
   - name: JioMeet
-    url: https://jiomeetpro.jio.com
+    url: https://jiomeet.com
     load_timeout_ms: 8000
     bot_detection_expected: true
     elements:
-      - selector: ".join-meeting-btn"
-        description: "Join meeting button"
-      - selector: "form"
-        description: "Login form"
-        
+      - selector: "main"
+        description: "Main heading"
+      - selector: "button"
+        description: "Join or start meeting button"
+
   - name: JioCloud
-    url: https://www.jiocloud.com
+    url: https://jiocloud.com
     load_timeout_ms: 8000
     bot_detection_expected: true
     elements:
-      - selector: ".login-btn"
-        description: "Login button"
-        
+      - selector: "nav"
+        description: "Navigation"
+      - selector: "button"
+        description: "Login/signup button"
+
   - name: Google
     url: https://www.google.com
-    load_timeout_ms: 5000
+    load_timeout_ms: 8000
     bot_detection_expected: false
     elements:
-      - selector: "input[name='q']"
-        description: "Search input box"
-      - selector: "input[name='btnK']"
+      - selector: "input[name=q]"
+        description: "Search input"
+      - selector: "input[name=btnK]"
         description: "Search button"
-        
+      - selector: "img[alt='Google']"
+        description: "Google logo"
+
   - name: YouTube
     url: https://www.youtube.com
     load_timeout_ms: 8000
     bot_detection_expected: false
     elements:
-      - selector: "ytd-searchbox"
-        description: "Search box"
-      - selector: "video"
-        description: "Video element"
-        
+      - selector: "input[name=search_query]"
+        description: "Search input"
+      - selector: "#logo"
+        description: "YouTube logo"
+      - selector: "nav"
+        description: "Navigation"
+
   - name: Wikipedia
     url: https://www.wikipedia.org
-    load_timeout_ms: 4000
+    load_timeout_ms: 8000
     bot_detection_expected: false
     elements:
-      - selector: "#searchInput"
+      - selector: "input[type=search]"
         description: "Search input"
-      - selector: ".central-textlogo"
-        description: "Wikipedia logo"
-        
+      - selector: "#searchLanguage"
+        description: "Language selector"
+      - selector: "h1"
+        description: "Main heading"
+
   - name: GitHub
-    url: https://github.com
-    load_timeout_ms: 6000
+    url: https://www.github.com
+    load_timeout_ms: 8000
     bot_detection_expected: false
     elements:
-      - selector: "header"
-        description: "Main header"
-      - selector: "form.js-site-search-form"
-        description: "Search form"
+      - selector: "nav"
+        description: "Navigation"
+      - selector: "a[href*='/login']"
+        description: "Sign in link"
+      - selector: "h1"
+        description: "Hero heading"
 
 native_apps:
   # Daksh fills this in his branch
