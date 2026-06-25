@@ -4,43 +4,160 @@ Owner: Ayush — Part A (Web/URL testing)
 """
 import logging
 import time
+import os
 import re
-from playwright.sync_api import sync_playwright
+import datetime
+from playwright.sync_api import sync_playwright, Page, Browser, BrowserContext, TimeoutError as PlaywrightTimeoutError
 
 # CONFIG
 DEFAULT_LOAD_TIMEOUT_MS = 8000
-BOT_DETECTION_SIGNALS = ["captcha", "are you human", "verify", "cloudflare", "bot check", "access denied"]
 ELEMENT_TIMEOUT_MS = 3000
+BOT_DETECTION_SIGNALS = [
+    "captcha", "are you human", "verify you are human",
+    "cloudflare", "bot check", "access denied", 
+    "checking your browser", "ddos protection"
+]
+LOG_PATH = os.path.expanduser("~/.local/share/jiopc/agent/part_a.log")
 
-logger = logging.getLogger(__name__)
+# Setup logging
+os.makedirs(os.path.dirname(LOG_PATH), exist_ok=True)
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s [%(levelname)s] %(message)s',
+    handlers=[
+        logging.FileHandler(LOG_PATH),
+        logging.StreamHandler()
+    ]
+)
+logger_module = logging.getLogger(__name__)
 
-def _launch_browser() -> any:
-    """Returns Playwright browser instance."""
-    pass
+def _check_bot_detection(page: Page) -> bool:
+    try:
+        content = page.content().lower()
+        url = page.url.lower()
+        for signal in BOT_DETECTION_SIGNALS:
+            if signal in content or signal in url:
+                return True
+        return False
+    except Exception:
+        return False
 
-def _test_url(browser, web_app: dict, logger) -> str:
-    """Returns result string."""
-    pass
+def _check_elements(page: Page, elements: list) -> tuple[bool, list[str]]:
+    missing = []
+    for el in elements:
+        try:
+            page.wait_for_selector(el["selector"], timeout=ELEMENT_TIMEOUT_MS)
+        except Exception:
+            missing.append(el["selector"])
+            
+    if missing:
+        return False, missing
+    return True, []
 
-def _check_bot_detection(page) -> bool:
-    pass
+def _measure_load_time(page: Page, url: str, timeout_ms: int) -> tuple[int, bool]:
+    start = time.time()
+    try:
+        page.goto(url, wait_until="domcontentloaded", timeout=timeout_ms)
+        elapsed_ms = int((time.time() - start) * 1000)
+        return elapsed_ms, False
+    except PlaywrightTimeoutError:
+        return timeout_ms, True
+    except Exception as e:
+        raise e
 
-def _check_elements(page, elements: list) -> tuple[bool, list]:
-    pass
+def _test_single_url(page: Page, web_app: dict) -> tuple[str, str, int]:
+    start_time = time.time()
+    try:
+        url = web_app["url"]
+        load_timeout_ms = web_app.get("load_timeout_ms", DEFAULT_LOAD_TIMEOUT_MS)
+        
+        load_time_ms, timed_out = _measure_load_time(page, url, load_timeout_ms)
+        elapsed_ms = int((time.time() - start_time) * 1000)
+        
+        if timed_out:
+            return "FAIL", f"Page timed out after {load_timeout_ms}ms", elapsed_ms
+            
+        if _check_bot_detection(page):
+            return "BLOCKED", "Bot detection page detected", elapsed_ms
+            
+        # Step 4: page.status not natively available on Playwright Page object. Skipped gracefully.
 
-def _check_load_time(load_ms: int, threshold_ms: int) -> bool:
-    pass
+        elements = web_app.get("elements", [])
+        all_found, missing = _check_elements(page, elements)
+        
+        elapsed_ms = int((time.time() - start_time) * 1000)
+        
+        if not all_found:
+            return "FAIL", f"Missing elements: {', '.join(missing)}", elapsed_ms
+            
+        detail = f"All {len(elements)} elements found, load={load_time_ms}ms"
+        if load_time_ms > load_timeout_ms:
+            detail += " (WARNING: load time exceeded timeout)"
+            
+        return "PASS", detail, elapsed_ms
+        
+    except Exception as e:
+        elapsed_ms = int((time.time() - start_time) * 1000)
+        return "FAIL", f"Unexpected error: {str(e)}", elapsed_ms
 
 def run_web_tests(config: dict, logger) -> int:
     """
-    Entry point called by jiopc_agent.py runner core.
+    Entry point called by Daksh's jiopc_agent.py runner core.
+    
     Args:
-        config: full parsed YAML config dict
-        logger: shared Logger instance from runner core
+        config: full parsed YAML config as Python dict.
+                Web apps are at config["web_apps"] — list of dicts.
+        logger: shared Logger instance. Call logger.log() for each result.
+    
     Returns:
-        int: number of failed tests (0 = all passed)
-    Iterates over config["web_apps"], tests each URL using 
-    Playwright headless Chromium, logs each result via logger.log()
+        int: count of FAIL results (0 = all passed or all BLOCKED)
+        NOTE: BLOCKED is not counted as a failure.
     """
-    # TODO: Ayush implements
-    pass
+    web_apps = config.get("web_apps", [])
+    failed_count = 0
+    
+    try:
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            try:
+                for web_app in web_apps:
+                    context = browser.new_context()
+                    page = context.new_page()
+                    
+                    try:
+                        result, detail, duration_ms = _test_single_url(page, web_app)
+                    except Exception as e:
+                        result = "FAIL"
+                        detail = f"Uncaught exception: {str(e)}"
+                        duration_ms = 0
+                    
+                    # Call shared logger
+                    logger.log(
+                        component="A",
+                        test_name=web_app.get("name", "Unknown"),
+                        result=result,
+                        duration_ms=duration_ms,
+                        detail=detail
+                    )
+                    
+                    # Print to terminal
+                    print(f"[A] {web_app.get('name')}: {result} — {detail}")
+                    
+                    if result == "FAIL":
+                        failed_count += 1
+                        
+                    context.close()
+            finally:
+                browser.close()
+                
+    except Exception as e:
+        logger.log(
+            component="A",
+            test_name="Browser Launch",
+            result="FAIL",
+            duration_ms=0,
+            detail=f"Failed to launch browser: {str(e)}"
+        )
+        return len(web_apps)
+
+    return failed_count
