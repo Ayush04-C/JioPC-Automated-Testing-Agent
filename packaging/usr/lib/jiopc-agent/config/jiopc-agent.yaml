@@ -21,10 +21,10 @@ web_apps:
     load_timeout_ms: 15000
     bot_detection_expected: true
     elements:
-      - selector: "#searchBar"
-        description: "Search bar"
-      - selector: "#page-container > div > div._3PHMluZ7H9jfd85qlO9xMYUhzbxY87069y3Cj6HtFWR > aside > nav"
-        description: "Navigation"
+      - selector: "#__next"
+        description: "App Root"
+      - selector: "#page-container"
+        description: "Page Container"
 
   - name: JioMeet
     url: https://jiomeet.com
