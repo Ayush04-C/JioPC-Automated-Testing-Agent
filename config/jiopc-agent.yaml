@@ -18,11 +18,11 @@ web_apps:
 
   - name: JioHotstar
     url: https://www.jiohotstar.com
-    load_timeout_ms: 8000
+    load_timeout_ms: 15000
     bot_detection_expected: true
     elements:
       - selector: "#searchBar"
-        description: "Search"
+        description: "Search bar"
       - selector: "#page-container > div > div._3PHMluZ7H9jfd85qlO9xMYUhzbxY87069y3Cj6HtFWR > aside > nav"
         description: "Navigation"
 
