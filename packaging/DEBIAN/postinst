@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # 1. Install Python dependencies:
-pip3 install pyyaml psutil pyxdg playwright openai || true
+pip3 install pyyaml psutil pyxdg playwright openai --break-system-packages || true
 
 # 2. Install Playwright Chromium browser:
 python3 -m playwright install chromium || true
