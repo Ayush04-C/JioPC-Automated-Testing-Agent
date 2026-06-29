@@ -79,8 +79,7 @@ def _call_llm(prompt: str, base_url: str, model: str, api_key: str) -> str:
     try:
         response = client.chat.completions.create(
             model=model,
-            messages=[{"role": "user", "content": prompt}],
-            max_tokens=DEFAULT_MAX_TOKENS
+            messages=[{"role": "user", "content": prompt}]
         )
         msg = response.choices[0].message
         content = msg.content
