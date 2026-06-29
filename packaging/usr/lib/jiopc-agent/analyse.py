@@ -82,7 +82,18 @@ def _call_llm(prompt: str, base_url: str, model: str, api_key: str) -> str:
             messages=[{"role": "user", "content": prompt}],
             max_tokens=DEFAULT_MAX_TOKENS
         )
-        return response.choices[0].message.content
+        msg = response.choices[0].message
+        content = msg.content
+        
+        # Fallback for alternative providers (e.g., BharatCode reasoning models)
+        if not content:
+            reasoning = getattr(msg, "reasoning", None)
+            if reasoning:
+                content = f"[Reasoning Process]\n{reasoning}"
+            else:
+                content = str(msg)
+                
+        return content
     except Exception as e:
         raise e
 
