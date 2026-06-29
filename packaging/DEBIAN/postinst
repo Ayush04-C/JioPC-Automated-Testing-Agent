@@ -1,7 +1,21 @@
 #!/bin/bash
+
+# 1. Install Python dependencies:
 pip3 install pyyaml psutil pyxdg playwright openai || true
+
+# 2. Install Playwright Chromium browser:
 python3 -m playwright install chromium || true
+
+# 3. Set executable permissions:
 chmod +x /usr/lib/jiopc-agent/jiopc_agent.py || true
+chmod +x /usr/lib/jiopc-agent/part_a.py || true
+chmod +x /usr/lib/jiopc-agent/analyse.py || true
 chmod +x /usr/bin/jiopc-agent || true
+
+# 4. Create log directory for the user:
 mkdir -p /home/user/.local/share/jiopc/agent || true
 chown -R user:user /home/user/.local/share/jiopc || true
+
+# 5. Print success message:
+echo "jiopc-testing-agent installed successfully."
+echo "Run: jiopc-agent --config /usr/lib/jiopc-agent/config/jiopc-agent.yaml"
