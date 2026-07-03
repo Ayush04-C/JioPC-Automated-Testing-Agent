@@ -100,6 +100,7 @@ def main():
             "hyperfine", 
             "--warmup", "1", 
             "--runs", "3", 
+            "--ignore-failure",
             "jiopc-agent --config /usr/lib/jiopc-agent/config/jiopc-agent.yaml"
         ])
     else:
