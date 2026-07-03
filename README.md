@@ -56,6 +56,17 @@ LLM_API_KEY="your-api-key"
 
 If you prefer not to use a `.env` file, you can `export` these variables directly into your bash terminal before running the agent.
 
+## Email Summary (Bonus Feature)
+
+The agent can automatically email the final LLM report (Executive Summary and PROMOTE/HOLD recommendation) to administrators using SMTP.
+
+1. **Configure YAML:** Open `config/jiopc-agent.yaml` and set your sender/receiver email addresses in the `agent.email` block.
+2. **Set Password:** Add your SMTP password (e.g. Gmail App Password) to your `.env` file:
+```env
+SMTP_PASS="your_16_char_app_password"
+```
+When you run with `--analyse`, the email will automatically be dispatched upon completion.
+
 ## Logging & How to Interpret Results
 
 ### Log Location
