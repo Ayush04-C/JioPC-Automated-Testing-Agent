@@ -84,7 +84,7 @@ def run_app_health(config: Dict[str, Any], logger: Any) -> int:
         int: The total number of failed health checks.
     """
     failures = 0
-    apps = config.get("native_apps", [])
+    apps = config.get("native_apps") or []
     
     for app in apps:
         start_time = time.perf_counter()

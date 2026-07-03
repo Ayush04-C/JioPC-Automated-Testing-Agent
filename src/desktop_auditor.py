@@ -69,7 +69,7 @@ def run_desktop_audit(config: Dict[str, Any], logger: Any) -> int:
     is correctly configured for the Linux desktop environment.
     """
     failures = 0
-    apps = config.get("desktop_presence", [])
+    apps = config.get("desktop_presence") or []
     
     for app in apps:
         start_time = time.perf_counter()
