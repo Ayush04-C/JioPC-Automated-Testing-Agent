@@ -1,0 +1,163 @@
+name: JioPC Testing Agent
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+  workflow_dispatch:
+
+jobs:
+  test-and-analyse:
+    runs-on: ubuntu-24.04
+    permissions:
+      pull-requests: write
+      contents: read
+    env:
+      LLM_BASE_URL: https://api.openai.com/v1
+      LLM_MODEL: gpt-3.5-turbo
+      LLM_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y xvfb xdg-utils wmctrl
+
+      - name: Install Python dependencies
+        run: |
+          pip install --upgrade pip
+          pip install pyyaml psutil pyxdg playwright openai
+
+      - name: Install Playwright Chromium
+        run: python3 -m playwright install chromium --with-deps
+
+      - name: Create log directory
+        run: mkdir -p ~/.local/share/jiopc/agent
+
+      - name: Run agent
+        run: |
+          python3 src/jiopc_agent.py \
+            --config config/jiopc-agent.yaml \
+            --part A \
+            2>&1 | tee /tmp/agent_output.txt
+        continue-on-error: true
+
+      - name: Find log file
+        run: |
+          LOG_FILE=$(ls -t ~/.local/share/jiopc/agent/test_run_*.log 2>/dev/null | head -1)
+          if [ -z "$LOG_FILE" ]; then
+            echo "ERROR: No log file found"
+            exit 1
+          fi
+          echo "LOG_FILE=$LOG_FILE" >> $GITHUB_ENV
+          echo "Found log file: $LOG_FILE"
+          cat "$LOG_FILE"
+
+      - name: Run LLM Analysis
+        run: |
+          python3 src/analyse.py --log "$LOG_FILE" > /tmp/analysis_output.txt 2>&1
+          echo "--- LLM Analysis Output ---"
+          cat /tmp/analysis_output.txt
+          
+          # Save analysis output to env for PR comment
+          {
+            echo 'ANALYSIS_OUTPUT<<EOF'
+            cat /tmp/analysis_output.txt
+            echo 'EOF'
+          } >> $GITHUB_ENV
+        env:
+          LLM_BASE_URL: ${{ env.LLM_BASE_URL }}
+          LLM_MODEL: ${{ env.LLM_MODEL }}
+          LLM_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        continue-on-error: true
+
+      - name: Extract test summary
+        run: |
+          # Read the summary line from the JSON Lines log
+          SUMMARY=$(python3 -c "
+          import json, sys
+          with open('$LOG_FILE') as f:
+              for line in f:
+                  try:
+                      obj = json.loads(line.strip())
+                      if obj.get('summary'):
+                          print(json.dumps(obj, indent=2))
+                          sys.exit(0)
+                  except:
+                      pass
+          print('{}')
+          ")
+          
+          TOTAL=$(echo "$SUMMARY" | python3 -c "import json,sys; d=json.load(sys.stdin); print(d.get('total',0))")
+          PASS=$(echo "$SUMMARY" | python3 -c "import json,sys; d=json.load(sys.stdin); print(d.get('pass',0))")
+          FAIL=$(echo "$SUMMARY" | python3 -c "import json,sys; d=json.load(sys.stdin); print(d.get('fail',0))")
+          BLOCKED=$(echo "$SUMMARY" | python3 -c "import json,sys; d=json.load(sys.stdin); print(d.get('blocked',0))")
+          
+          echo "TOTAL=$TOTAL" >> $GITHUB_ENV
+          echo "PASS=$PASS" >> $GITHUB_ENV
+          echo "FAIL=$FAIL" >> $GITHUB_ENV
+          echo "BLOCKED=$BLOCKED" >> $GITHUB_ENV
+          
+          echo "Total: $TOTAL | Pass: $PASS | Fail: $FAIL | Blocked: $BLOCKED"
+
+      - name: Post PR comment
+        uses: actions/github-script@v7
+        if: github.event_name == 'pull_request'
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const total = process.env.TOTAL || '0';
+            const pass = process.env.PASS || '0';
+            const fail = process.env.FAIL || '0';
+            const blocked = process.env.BLOCKED || '0';
+            const analysis = process.env.ANALYSIS_OUTPUT || 'Analysis not available';
+            
+            const statusEmoji = parseInt(fail) === 0 ? '✅' : '❌';
+            const statusText = parseInt(fail) === 0 ? 'PASS' : 'FAIL';
+            
+            const body = [
+              '## ' + statusEmoji + ' JioPC Testing Agent — ' + statusText,
+              '',
+              '| Metric | Count |',
+              '|--------|-------|',
+              '| Total Tests | ' + total + ' |',
+              '| ✅ Passed | ' + pass + ' |',
+              '| ❌ Failed | ' + fail + ' |',
+              '| 🔒 Blocked (bot protection) | ' + blocked + ' |',
+              '',
+              '> **Note:** BLOCKED results are expected for Jio URLs behind',
+              '> Cloudflare protection and do not indicate failures.',
+              '',
+              '---',
+              '',
+              '## 🤖 LLM Analysis',
+              '',
+              '```',
+              analysis,
+              '```',
+              '',
+              '---',
+              '_Triggered by commit ' + context.sha.substring(0, 7) + '_'
+            ].join('\n');
+            
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: body
+            });
+
+      - name: Check result
+        run: |
+          if [ "$FAIL" -gt "0" ]; then
+            echo "Pipeline failed: $FAIL test(s) failed"
+            exit 1
+          fi
+          echo "All tests passed or blocked. Pipeline successful."

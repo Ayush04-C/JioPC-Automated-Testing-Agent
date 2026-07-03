@@ -54,7 +54,7 @@ jobs:
         with:
           issue-number: ${{ github.event.pull_request.number }}
           body: |
-            ## 🤖 JioPC Automated Testing Report
+            ## JioPC Automated Testing Report
             *The testing agent executed the full validation suite against this OS Patch.*
             
             ```text
