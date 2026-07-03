@@ -2,6 +2,13 @@ agent:
   log_dir: ~/.local/share/jiopc/agent/
   llm_prompt_file: /usr/lib/jiopc-agent/prompts/analyse_log.txt
   parts_order: [A, B, C]
+  email:
+    enabled: true
+    smtp_server: smtp.gmail.com
+    smtp_port: 587
+    smtp_user: your_email@gmail.com
+    to_address: admin@jiopc.com
+    from_address: agent@jiopc.com
 
 web_apps:
   - name: JioSaavn

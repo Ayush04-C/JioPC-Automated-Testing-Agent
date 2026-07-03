@@ -54,6 +54,9 @@ Paste the following inside, replacing with your actual credentials:
 LLM_BASE_URL="https://bharatcode.ai/api/model/v1"
 LLM_MODEL="bharatcode:qwen36-35b-q6-256k-vision"
 LLM_API_KEY="your-api-key"
+
+# Bonus: If you want to enable automatic SMTP emails, add your password here
+SMTP_PASS="your_email_password"
 ```
 
 ## 6. Run the Agent
@@ -73,6 +76,11 @@ jiopc-agent --config /usr/lib/jiopc-agent/config/jiopc-agent.yaml
 **Run the full test suite AND generate an AI report:**
 ```bash
 jiopc-agent --config /usr/lib/jiopc-agent/config/jiopc-agent.yaml --analyse
+```
+
+**Run a specific part AND generate an AI report for it:**
+```bash
+jiopc-agent --config /usr/lib/jiopc-agent/config/jiopc-agent.yaml --part B --analyse
 ```
 
 ## 7. Finding and Interpreting Logs
