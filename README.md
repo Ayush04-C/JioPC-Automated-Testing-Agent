@@ -32,12 +32,12 @@ Once installed, the agent registers a global command on your system (`jiopc-agen
 
 **Run the full test suite and LLM analysis in one step:**
 ```bash
-jiopc-agent --config /usr/lib/jiopc-agent/config/jiopc-agent.yaml --analyse
+jiopc-agent --analyse
 ```
 
 **Run only a specific part (e.g., Part B - Native Apps):**
 ```bash
-jiopc-agent --config /usr/lib/jiopc-agent/config/jiopc-agent.yaml --part B
+jiopc-agent --part B
 ```
 
 ## How to Configure the LLM Analysis

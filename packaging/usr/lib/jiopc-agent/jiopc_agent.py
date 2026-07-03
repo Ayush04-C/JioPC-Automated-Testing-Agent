@@ -15,7 +15,8 @@ from web_tester import run_web_tests
 def parse_args() -> argparse.Namespace:
     """Parses command line arguments."""
     parser = argparse.ArgumentParser(description="JioPC Validation Agent Runner")
-    parser.add_argument("--config", type=str, default="config/jiopc-agent.yaml", help="Path to YAML config file")
+    default_config = "/usr/lib/jiopc-agent/config/jiopc-agent.yaml" if Path("/usr/lib/jiopc-agent/config/jiopc-agent.yaml").exists() else "config/jiopc-agent.yaml"
+    parser.add_argument("--config", type=str, default=default_config, help="Path to YAML config file")
     parser.add_argument("--part", type=str, choices=["A", "B", "C"], help="Specific part to run (A, B, or C)")
     parser.add_argument("--analyse", action="store_true", help="Run LLM analysis on log")
     return parser.parse_args()

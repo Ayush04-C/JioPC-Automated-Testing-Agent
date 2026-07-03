@@ -62,17 +62,17 @@ You are now ready to run tests. Choose one of the commands below depending on wh
 
 **Test only web apps (fastest test):**
 ```bash
-jiopc-agent --config /usr/lib/jiopc-agent/config/jiopc-agent.yaml --part A
+jiopc-agent --part A
 ```
 
 **Run the full test suite (A, B, and C):**
 ```bash
-jiopc-agent --config /usr/lib/jiopc-agent/config/jiopc-agent.yaml
+jiopc-agent
 ```
 
 **Run the full test suite AND generate an AI report:**
 ```bash
-jiopc-agent --config /usr/lib/jiopc-agent/config/jiopc-agent.yaml --analyse
+jiopc-agent --analyse
 ```
 
 ## 7. Finding and Interpreting Logs
