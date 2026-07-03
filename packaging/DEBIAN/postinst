@@ -24,6 +24,7 @@ chmod +x /usr/lib/jiopc-agent/jiopc_agent.py || true
 chmod +x /usr/lib/jiopc-agent/web_tester.py || true
 chmod +x /usr/lib/jiopc-agent/app_health.py || true
 chmod +x /usr/lib/jiopc-agent/desktop_auditor.py || true
+chmod +x /usr/lib/jiopc-agent/logger.py || true
 chmod +x /usr/lib/jiopc-agent/analyse.py || true
 chmod +x /usr/bin/jiopc-agent || true
 
