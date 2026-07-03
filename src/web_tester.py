@@ -78,11 +78,14 @@ def _test_single_url(page: Page, web_app: dict) -> tuple[str, str, int]:
         if timed_out:
             return "FAIL", f"Page timed out after {load_timeout_ms}ms", elapsed_ms
             
-        if status_code >= 400:
-            return "FAIL", f"HTTP Error {status_code} returned", elapsed_ms
-            
         if _check_bot_detection(page):
             return "BLOCKED", "Bot detection page detected", elapsed_ms
+            
+        if status_code in [403, 429] and web_app.get("bot_detection_expected"):
+            return "BLOCKED", f"Bot protection blocked access (HTTP {status_code})", elapsed_ms
+            
+        if status_code >= 400:
+            return "FAIL", f"HTTP Error {status_code} returned", elapsed_ms
 
         elements = web_app.get("elements", [])
         all_found, missing = _check_elements(page, elements)
