@@ -91,7 +91,7 @@ jobs:
                       if obj.get('summary'):
                           print(json.dumps(obj, indent=2))
                           sys.exit(0)
-                  except:
+                  except Exception:
                       pass
           print('{}')
           ")
