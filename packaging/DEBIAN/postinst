@@ -1,7 +1,36 @@
 #!/bin/bash
-pip3 install pyyaml psutil pyxdg playwright openai || true
-python3 -m playwright install chromium || true
+
+# Determine the actual non-root user who ran the sudo command
+REAL_USER=${SUDO_USER:-$(logname 2>/dev/null || echo $USER)}
+if [ "$REAL_USER" = "root" ]; then
+    # Fallback if somehow still root, grab the first normal user (id 1000)
+    REAL_USER=$(id -un 1000 2>/dev/null || echo "user")
+fi
+
+# Determine their actual home directory robustly
+REAL_HOME=$(getent passwd "$REAL_USER" | cut -d: -f6)
+if [ -z "$REAL_HOME" ]; then
+    REAL_HOME="/home/$REAL_USER"
+fi
+
+# 1. Install Python dependencies for the real user:
+sudo -u "$REAL_USER" pip3 install pyyaml psutil pyxdg playwright openai --break-system-packages || true
+
+# 2. Install Playwright Chromium browser for the real user:
+sudo -u "$REAL_USER" python3 -m playwright install chromium || true
+
+# 3. Set executable permissions:
 chmod +x /usr/lib/jiopc-agent/jiopc_agent.py || true
+chmod +x /usr/lib/jiopc-agent/web_tester.py || true
+chmod +x /usr/lib/jiopc-agent/app_health.py || true
+chmod +x /usr/lib/jiopc-agent/desktop_auditor.py || true
+chmod +x /usr/lib/jiopc-agent/analyse.py || true
 chmod +x /usr/bin/jiopc-agent || true
-mkdir -p /home/user/.local/share/jiopc/agent || true
-chown -R user:user /home/user/.local/share/jiopc || true
+
+# 4. Create log directory inside the real user's home folder:
+mkdir -p "$REAL_HOME/.local/share/jiopc/agent" || true
+chown -R "$REAL_USER":"$REAL_USER" "$REAL_HOME/.local/share/jiopc" || true
+
+# 5. Print success message:
+echo "jiopc-testing-agent installed successfully for user: $REAL_USER"
+echo "Run: jiopc-agent --config /usr/lib/jiopc-agent/config/jiopc-agent.yaml"
