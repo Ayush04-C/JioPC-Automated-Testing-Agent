@@ -11,7 +11,7 @@ from playwright.sync_api import sync_playwright, Page, Browser, BrowserContext, 
 
 # CONFIG
 DEFAULT_LOAD_TIMEOUT_MS = 8000
-ELEMENT_TIMEOUT_MS = 3000
+ELEMENT_TIMEOUT_MS = 10000
 BOT_DETECTION_SIGNALS = [
     "captcha", "are you human", "verify you are human",
     "cloudflare", "bot check", "access denied", 

@@ -6,7 +6,9 @@ def _find_desktop_file(filename: str) -> Optional[Path]:
     """Searches standard Linux launcher directories for a desktop file."""
     search_dirs = [
         Path.home() / ".local" / "share" / "applications",
-        Path("/usr") / "share" / "applications"
+        Path("/usr") / "share" / "applications",
+        Path("/var/lib/snapd/desktop/applications"),
+        Path.home() / "Desktop"
     ]
     
     for directory in search_dirs:
@@ -57,7 +59,7 @@ def _validate_launcher(desktop_info: Dict[str, str], expected_category: str) -> 
         
     categories = [cat.strip() for cat in categories_str.split(";") if cat.strip()]
     
-    if expected_category not in categories:
+    if expected_category and expected_category not in categories:
         return "MISPLACED", f"Expected category {expected_category} not found."
         
     return "PASS", "Launcher present and correctly configured."

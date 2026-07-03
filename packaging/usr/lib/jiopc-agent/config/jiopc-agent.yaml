@@ -172,7 +172,6 @@ desktop_presence:
 
   - name: File Manager
     desktop_file: pcmanfm-qt.desktop
-    menu_category: System
 
   - name: Text Editor
     desktop_file: featherpad.desktop
@@ -220,4 +219,3 @@ desktop_presence:
 
   - name: Software Center
     desktop_file: io.snapcraft.SessionAgent.desktop
-    menu_category: System
