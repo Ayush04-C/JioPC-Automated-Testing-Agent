@@ -1,0 +1,39 @@
+{"timestamp": "2026-07-03T09:54:13Z", "component": "A", "test_name": "JioSaavn", "result": "FAIL", "duration_ms": 285, "detail": "HTTP Error 403 returned"}
+{"timestamp": "2026-07-03T09:54:16Z", "component": "A", "test_name": "JioHotstar", "result": "PASS", "duration_ms": 2631, "detail": "All 1 elements found, load=1357ms"}
+{"timestamp": "2026-07-03T09:54:20Z", "component": "A", "test_name": "JioMeet", "result": "PASS", "duration_ms": 4093, "detail": "All 2 elements found, load=2128ms"}
+{"timestamp": "2026-07-03T09:54:22Z", "component": "A", "test_name": "JioCloud", "result": "BLOCKED", "duration_ms": 2360, "detail": "Bot detection page detected"}
+{"timestamp": "2026-07-03T09:54:24Z", "component": "A", "test_name": "Google", "result": "PASS", "duration_ms": 1739, "detail": "All 3 elements found, load=974ms"}
+{"timestamp": "2026-07-03T09:54:28Z", "component": "A", "test_name": "YouTube", "result": "BLOCKED", "duration_ms": 3141, "detail": "Bot detection page detected"}
+{"timestamp": "2026-07-03T09:54:31Z", "component": "A", "test_name": "Wikipedia", "result": "PASS", "duration_ms": 3166, "detail": "All 3 elements found, load=2945ms"}
+{"timestamp": "2026-07-03T09:54:36Z", "component": "A", "test_name": "GitHub", "result": "BLOCKED", "duration_ms": 3975, "detail": "Bot detection page detected"}
+{"timestamp": "2026-07-03T09:54:36Z", "component": "B", "test_name": "Calculator", "result": "PASS", "duration_ms": 19, "detail": "Application launched successfully."}
+{"timestamp": "2026-07-03T09:54:36Z", "component": "B", "test_name": "Terminal", "result": "PASS", "duration_ms": 17, "detail": "Application launched successfully."}
+{"timestamp": "2026-07-03T09:54:36Z", "component": "B", "test_name": "File Manager", "result": "PASS", "duration_ms": 9, "detail": "Application launched successfully."}
+{"timestamp": "2026-07-03T09:54:36Z", "component": "B", "test_name": "Text Editor", "result": "PASS", "duration_ms": 11, "detail": "Application launched successfully."}
+{"timestamp": "2026-07-03T09:54:36Z", "component": "B", "test_name": "Firefox", "result": "PASS", "duration_ms": 11, "detail": "Application launched successfully."}
+{"timestamp": "2026-07-03T09:54:36Z", "component": "B", "test_name": "Google Chrome", "result": "PASS", "duration_ms": 13, "detail": "Application launched successfully."}
+{"timestamp": "2026-07-03T09:54:36Z", "component": "B", "test_name": "LibreOffice Writer", "result": "PASS", "duration_ms": 13, "detail": "Application launched successfully."}
+{"timestamp": "2026-07-03T09:54:36Z", "component": "B", "test_name": "LibreOffice Calc", "result": "PASS", "duration_ms": 14, "detail": "Application launched successfully."}
+{"timestamp": "2026-07-03T09:54:36Z", "component": "B", "test_name": "LibreOffice Impress", "result": "PASS", "duration_ms": 10, "detail": "Application launched successfully."}
+{"timestamp": "2026-07-03T09:54:36Z", "component": "B", "test_name": "Image Viewer", "result": "PASS", "duration_ms": 18, "detail": "Application launched successfully."}
+{"timestamp": "2026-07-03T09:54:36Z", "component": "B", "test_name": "Settings", "result": "PASS", "duration_ms": 12, "detail": "Application launched successfully."}
+{"timestamp": "2026-07-03T09:54:36Z", "component": "B", "test_name": "Process Viewer", "result": "PASS", "duration_ms": 18, "detail": "Application launched successfully."}
+{"timestamp": "2026-07-03T09:54:36Z", "component": "B", "test_name": "Notes", "result": "PASS", "duration_ms": 10, "detail": "Application launched successfully."}
+{"timestamp": "2026-07-03T09:54:36Z", "component": "B", "test_name": "Audacious", "result": "PASS", "duration_ms": 10, "detail": "Application launched successfully."}
+{"timestamp": "2026-07-03T09:54:36Z", "component": "B", "test_name": "Software Center", "result": "PASS", "duration_ms": 16, "detail": "Application launched successfully."}
+{"timestamp": "2026-07-03T09:54:36Z", "component": "C", "test_name": "Calculator", "result": "PASS", "duration_ms": 0, "detail": "Launcher present and correctly configured."}
+{"timestamp": "2026-07-03T09:54:36Z", "component": "C", "test_name": "Terminal", "result": "PASS", "duration_ms": 0, "detail": "Launcher present and correctly configured."}
+{"timestamp": "2026-07-03T09:54:36Z", "component": "C", "test_name": "File Manager", "result": "PASS", "duration_ms": 0, "detail": "Launcher present and correctly configured."}
+{"timestamp": "2026-07-03T09:54:36Z", "component": "C", "test_name": "Text Editor", "result": "PASS", "duration_ms": 0, "detail": "Launcher present and correctly configured."}
+{"timestamp": "2026-07-03T09:54:36Z", "component": "C", "test_name": "Firefox", "result": "MISSING", "duration_ms": 0, "detail": "Desktop launcher firefox.desktop not found."}
+{"timestamp": "2026-07-03T09:54:36Z", "component": "C", "test_name": "Google Chrome", "result": "PASS", "duration_ms": 0, "detail": "Launcher present and correctly configured."}
+{"timestamp": "2026-07-03T09:54:36Z", "component": "C", "test_name": "LibreOffice Writer", "result": "PASS", "duration_ms": 0, "detail": "Launcher present and correctly configured."}
+{"timestamp": "2026-07-03T09:54:36Z", "component": "C", "test_name": "LibreOffice Calc", "result": "PASS", "duration_ms": 0, "detail": "Launcher present and correctly configured."}
+{"timestamp": "2026-07-03T09:54:36Z", "component": "C", "test_name": "LibreOffice Impress", "result": "PASS", "duration_ms": 0, "detail": "Launcher present and correctly configured."}
+{"timestamp": "2026-07-03T09:54:36Z", "component": "C", "test_name": "Image Viewer", "result": "PASS", "duration_ms": 0, "detail": "Launcher present and correctly configured."}
+{"timestamp": "2026-07-03T09:54:36Z", "component": "C", "test_name": "Settings", "result": "PASS", "duration_ms": 0, "detail": "Launcher present and correctly configured."}
+{"timestamp": "2026-07-03T09:54:36Z", "component": "C", "test_name": "Process Viewer", "result": "PASS", "duration_ms": 0, "detail": "Launcher present and correctly configured."}
+{"timestamp": "2026-07-03T09:54:36Z", "component": "C", "test_name": "Notes", "result": "PASS", "duration_ms": 0, "detail": "Launcher present and correctly configured."}
+{"timestamp": "2026-07-03T09:54:36Z", "component": "C", "test_name": "Audacious", "result": "PASS", "duration_ms": 0, "detail": "Launcher present and correctly configured."}
+{"timestamp": "2026-07-03T09:54:36Z", "component": "C", "test_name": "Software Center", "result": "MISPLACED", "duration_ms": 0, "detail": "Categories field missing."}
+{"summary": true, "total": 38, "pass": 32, "fail": 1, "blocked": 3, "degraded": 0, "missing": 1, "misplaced": 1, "component_breakdown": {"A": {"total": 8, "pass": 4, "fail": 1, "blocked": 3, "degraded": 0, "missing": 0, "misplaced": 0}, "B": {"total": 15, "pass": 15, "fail": 0, "blocked": 0, "degraded": 0, "missing": 0, "misplaced": 0}, "C": {"total": 15, "pass": 13, "fail": 0, "blocked": 0, "degraded": 0, "missing": 1, "misplaced": 1}}}
