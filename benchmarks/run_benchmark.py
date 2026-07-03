@@ -93,6 +93,19 @@ def main():
     else:
         print("No log files found in ~/.local/share/jiopc/agent/")
         
+    print("\n--- Hyperfine Timing Benchmark ---")
+    if subprocess.call(["which", "hyperfine"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL) == 0:
+        print("Running hyperfine for statistically rigorous execution timing...\n")
+        subprocess.run([
+            "hyperfine", 
+            "--warmup", "1", 
+            "--runs", "3", 
+            "jiopc-agent --config /usr/lib/jiopc-agent/config/jiopc-agent.yaml"
+        ])
+    else:
+        print("hyperfine is not installed. To run this optional timing benchmark, install it via:")
+        print("  sudo apt-get install hyperfine")
+        
     print("\nBenchmark complete.")
 
 if __name__ == "__main__":
