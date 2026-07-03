@@ -40,6 +40,11 @@ jiopc-agent --config /usr/lib/jiopc-agent/config/jiopc-agent.yaml --analyse
 jiopc-agent --config /usr/lib/jiopc-agent/config/jiopc-agent.yaml --part B
 ```
 
+**Run a specific part AND generate an AI report for it:**
+```bash
+jiopc-agent --config /usr/lib/jiopc-agent/config/jiopc-agent.yaml --part B --analyse
+```
+
 ## How to Configure the LLM Analysis
 
 The LLM analysis layer uses the standard `openai` SDK but is completely decoupled from any specific provider (OpenAI, Groq, BharatCode, Ollama, etc.).

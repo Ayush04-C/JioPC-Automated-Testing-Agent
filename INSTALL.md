@@ -78,6 +78,11 @@ jiopc-agent --config /usr/lib/jiopc-agent/config/jiopc-agent.yaml
 jiopc-agent --config /usr/lib/jiopc-agent/config/jiopc-agent.yaml --analyse
 ```
 
+**Run a specific part AND generate an AI report for it:**
+```bash
+jiopc-agent --config /usr/lib/jiopc-agent/config/jiopc-agent.yaml --part B --analyse
+```
+
 ## 7. Finding and Interpreting Logs
 
 Every test generates a detailed JSON Lines (`.jsonl`) log file. 
