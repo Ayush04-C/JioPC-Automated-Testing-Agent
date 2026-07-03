@@ -70,7 +70,7 @@ The agent can automatically email the final LLM report (Executive Summary and PR
 ```env
 SMTP_PASS="your_16_char_app_password"
 ```
-When you run with `--analyse`, the email will automatically be dispatched upon completion.
+When you run with the `--analyse` flag (e.g., `jiopc-agent --analyse` or `jiopc-agent --part A --analyse`), the email will automatically be dispatched upon completion.
 
 **Testing Email Configuration Locally:**
 If you want to quickly test your email configuration without rebuilding the `.deb` package, you can instruct the globally installed agent to read your local config file instead of the system default:
