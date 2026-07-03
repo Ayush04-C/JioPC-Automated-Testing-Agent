@@ -103,6 +103,49 @@ The logs are written in **JSON Lines (JSONL)** format, making them highly machin
 
 > **IMPORTANT:** `BLOCKED` is **NOT** a failure. It means a Jio-protected URL triggered expected bot detection in the headless browser. The LLM is explicitly trained to understand this distinction.
 
+## Trend Analysis
+
+After each test run, `trend_analyser.py` stores a summary in `~/.local/share/jiopc/agent/history.json` and compares the current run against the previous one to detect meaningful changes. This allows engineers to instantly identify system regressions across patches.
+
+| Signal | Meaning | Action needed |
+|--------|---------|---------------|
+| 🔴 REGRESSION | Test was PASS, now FAIL | Investigate immediately |
+| 🟢 RECOVERY | Test was FAIL, now PASS | Patch likely fixed this |
+| 🆕 NEW FAILURE | FAIL test not seen before | New issue introduced |
+| ⚠️ CONSISTENT FAIL | FAIL for 3+ runs in a row | Known persistent issue |
+
+### History File Details
+- **Stored at:** `~/.local/share/jiopc/agent/history.json`
+- Keeps the last 5 runs (the oldest is dropped when a 6th is added).
+- `BLOCKED` results are stored but **never** flagged as regressions (bot protection is expected behavior, not a failure).
+
+### How to Run Trend Analysis
+
+```bash
+# After running the main agent:
+python3 src/trend_analyser.py \
+  --log ~/.local/share/jiopc/agent/test_run_<timestamp>.log
+```
+
+**First run output:**
+```text
+First run recorded. Baseline established. No trend data yet.
+```
+
+**Subsequent run output example:**
+```text
+🔴 REGRESSIONS (1) — Tests that were PASS and are now FAIL:
+  - LibreOffice Writer: PASS → FAIL
+
+🟢 RECOVERIES (1) — Tests that were failing and now PASS:
+  - Chess: FAIL → PASS
+
+⚠️  CONSISTENT FAILURES (1) — FAIL for 3+ runs:
+  - JioMeet: failed 3 consecutive runs (first seen: 2026-06-20)
+```
+
+**Design Note:** The history file survives across sessions because it lives in the user's home directory (`~/.local/share/jiopc/agent/`), which persists on JioPC's NFS-mounted home. This means trend analysis works correctly even across VM reassignments — exactly matching JioPC's floating VM architecture.
+
 ## CI/CD Integration (Bonus Feature)
 
 The repository includes a production-ready **GitHub Actions Pipeline** (`.github/workflows/jiopc-agent-ci.yml`). 
