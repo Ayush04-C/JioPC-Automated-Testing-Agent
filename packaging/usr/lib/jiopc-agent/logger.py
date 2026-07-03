@@ -16,7 +16,7 @@ class Logger:
         Args:
             log_directory: The directory where logs will be stored.
             """
-        self._log_dir = Path(log_directory)
+        self._log_dir = Path(log_directory).expanduser()
         self._log_dir.mkdir(parents=True, exist_ok=True)
 
         timestamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
