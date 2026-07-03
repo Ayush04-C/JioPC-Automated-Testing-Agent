@@ -33,7 +33,8 @@ To allow the pipeline to securely communicate with the LLM without exposing cred
 
 | Secret name | What it is | Where to set it |
 |-------------|------------|-----------------|
-| `OPENAI_API_KEY` | OpenAI API key for LLM analysis | GitHub repo → Settings → Secrets and variables → Actions → New repository secret |
+| `LLM_API_KEY` | BharatCode API key for LLM analysis | GitHub repo → Settings → Secrets and variables → Actions → New repository secret |
+| `SMTP_PASS` | Gmail App Password for email summary (Optional) | GitHub repo → Settings → Secrets and variables → Actions → New repository secret |
 
 ## How to Read the PR Comment
 

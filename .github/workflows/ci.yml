@@ -12,9 +12,10 @@ jobs:
       pull-requests: write
       contents: read
     env:
-      LLM_BASE_URL: https://api.openai.com/v1
-      LLM_MODEL: gpt-3.5-turbo
-      LLM_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      LLM_BASE_URL: https://bharatcode.ai/api/model/v1
+      LLM_MODEL: bharatcode:qwen36-35b-q6-256k-vision
+      LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
+      SMTP_PASS: ${{ secrets.SMTP_PASS }}
     
     steps:
       - name: Checkout code
@@ -75,7 +76,7 @@ jobs:
         env:
           LLM_BASE_URL: ${{ env.LLM_BASE_URL }}
           LLM_MODEL: ${{ env.LLM_MODEL }}
-          LLM_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
         continue-on-error: true
 
       - name: Extract test summary
