@@ -132,4 +132,6 @@ def run_app_health(config: Dict[str, Any], logger: Any) -> int:
             detail=detail
         )
         
+        print(f"[B] {name}: {result} — {detail}")
+        
     return failures

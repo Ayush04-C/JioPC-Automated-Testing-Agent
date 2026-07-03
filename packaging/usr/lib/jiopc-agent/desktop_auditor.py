@@ -109,4 +109,6 @@ def run_desktop_audit(config: Dict[str, Any], logger: Any) -> int:
             detail=detail
         )
         
+        print(f"[C] {name}: {result} — {detail}")
+        
     return failures
