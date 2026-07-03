@@ -49,15 +49,22 @@ def _inject_log(template: str, log_content: str) -> str:
     return template.replace(LOG_PLACEHOLDER, log_content)
 
 def _get_llm_config() -> tuple[str, str, str]:
-    # Attempt to load from .env file
-    env_path = os.path.join(os.path.dirname(__file__), "../.env")
-    if os.path.exists(env_path):
-        with open(env_path, "r", encoding="utf-8") as f:
-            for line in f:
-                line = line.strip()
-                if line and not line.startswith("#") and "=" in line:
-                    k, v = line.split("=", 1)
-                    os.environ.setdefault(k.strip(), v.strip().strip("\"'"))
+    # Attempt to load from .env file in multiple standard locations
+    env_paths = [
+        os.path.join(os.getcwd(), ".env"),
+        os.path.expanduser("~/.env"),
+        os.path.join(os.path.dirname(__file__), "../.env")
+    ]
+    
+    for env_path in env_paths:
+        if os.path.exists(env_path):
+            with open(env_path, "r", encoding="utf-8") as f:
+                for line in f:
+                    line = line.strip()
+                    if line and not line.startswith("#") and "=" in line:
+                        k, v = line.split("=", 1)
+                        os.environ.setdefault(k.strip(), v.strip().strip("\"'"))
+            break
                     
     base_url = os.environ.get(ENV_BASE_URL)
     model = os.environ.get(ENV_MODEL)
