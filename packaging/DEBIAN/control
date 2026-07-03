@@ -3,4 +3,8 @@ Version: 0.1.0
 Architecture: all
 Maintainer: Team JioPC-IIT Bombay <ayush04-c@github.com>
 Depends: python3 (>= 3.11), python3-pip, xvfb, xdg-utils, git
+Section: utils
+Priority: optional
 Description: Automated testing agent for JioPC OS Image validation
+ Validates web apps, native app health, and desktop presence after
+ each JioPC OS Image patch. Includes an LLM-powered analysis layer.

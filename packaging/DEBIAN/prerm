@@ -1,2 +1,4 @@
 #!/bin/bash
-# prerm script for jiopc-testing-agent
+
+echo "Removing jiopc-testing-agent..."
+rm -f /usr/bin/jiopc-agent || true
