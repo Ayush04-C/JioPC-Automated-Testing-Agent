@@ -123,7 +123,9 @@ def run_web_tests(config: dict, logger) -> int:
             browser = p.chromium.launch(headless=True)
             try:
                 for web_app in web_apps:
-                    context = browser.new_context()
+                    context = browser.new_context(
+                        user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+                    )
                     page = context.new_page()
                     
                     try:

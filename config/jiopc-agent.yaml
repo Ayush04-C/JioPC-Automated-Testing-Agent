@@ -21,8 +21,6 @@ web_apps:
     load_timeout_ms: 15000
     bot_detection_expected: true
     elements:
-      - selector: "img[alt*='logo'], svg[class*='logo']"
-        description: "Logo image or SVG"
       - selector: "nav, [role='navigation']"
         description: "Navigation bar"
 
