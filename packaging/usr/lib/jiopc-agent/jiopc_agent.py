@@ -11,6 +11,7 @@ from app_health import run_app_health
 from desktop_auditor import run_desktop_audit
 from logger import Logger
 from web_tester import run_web_tests
+from mailer import send_summary_email
 
 def parse_args() -> argparse.Namespace:
     """Parses command line arguments."""
@@ -74,6 +75,7 @@ def main() -> None:
         print("LLM ANALYSIS RESULT")
         print("="*60)
         print(result)
+        send_summary_email(config, result)
         
     sys.exit(0 if total_failures == 0 else 1)
 
