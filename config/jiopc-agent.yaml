@@ -6,84 +6,216 @@ agent:
 web_apps:
   - name: JioSaavn
     url: https://www.jiosaavn.com
-    load_timeout_ms: 10000
+    load_timeout_ms: 8000
     bot_detection_expected: true
     elements:
-      - selector: "nav"
-        description: "Main navigation bar"
-      - selector: "div.play-button"
-        description: "Play button for content"
-        
-  - name: JioCinema
-    url: https://www.jiocinema.com
-    load_timeout_ms: 12000
+      - selector: "#root > div.home > header"
+        description: "Navbar"
+      - selector: "#search > div.rbt > div:nth-child(1) > input.rbt-input-main.form-control.rbt-input"
+        description: "Search input"
+      - selector: '#root > div.home > header > div > div.o-layout__item.u-1\/2\@lg.u-align-left\@sm'
+        description: "Logo"
+
+  - name: JioHotstar
+    url: https://www.jiohotstar.com
+    load_timeout_ms: 15000
     bot_detection_expected: true
     elements:
-      - selector: "header"
-        description: "Main header"
-      - selector: ".video-player"
-        description: "Video player container"
-        
+      - selector: "nav, [role='navigation']"
+        description: "Navigation bar"
+
   - name: JioMeet
-    url: https://jiomeetpro.jio.com
+    url: https://jiomeet.com
     load_timeout_ms: 8000
     bot_detection_expected: true
     elements:
-      - selector: ".join-meeting-btn"
-        description: "Join meeting button"
-      - selector: "form"
-        description: "Login form"
-        
+      - selector: "#website-header > app-website-header"
+        description: "Main header"
+      - selector: "#headerJoinMeetingButton"
+        description: "Join button"
+
   - name: JioCloud
-    url: https://www.jiocloud.com
+    url: https://jiocloud.com
     load_timeout_ms: 8000
     bot_detection_expected: true
     elements:
-      - selector: ".login-btn"
-        description: "Login button"
-        
+      - selector: "#landing-header > div.desktop-header.m-mobile-header"
+        description: "Nav"
+      - selector: "#landing-header > div.desktop-header.m-mobile-header > div > div.col-3.pl-0.ml-0.pr-0.opt-cont > div > button"
+        description: "Login/signup"
+
   - name: Google
     url: https://www.google.com
-    load_timeout_ms: 5000
+    load_timeout_ms: 8000
     bot_detection_expected: false
     elements:
-      - selector: "input[name='q']"
-        description: "Search input box"
-      - selector: "input[name='btnK']"
+      - selector: "#APjFqb"
+        description: "Search box"
+      - selector: "#LS8OJ > div"
+        description: "Google doodle"
+      - selector: "body > div.L3eUgb > div.o3j99.ikrT4e.KEY6ib > form > div:nth-child(1) > div > div.FPdoLc.T14B5e > center > input.gNO89b"
         description: "Search button"
-        
+
   - name: YouTube
     url: https://www.youtube.com
     load_timeout_ms: 8000
     bot_detection_expected: false
     elements:
-      - selector: "ytd-searchbox"
-        description: "Search box"
-      - selector: "video"
-        description: "Video element"
-        
+      - selector: "#center > yt-searchbox > div.ytSearchboxComponentInputContainer > div > form > input"
+        description: "Search input"
+      - selector: "#logo-icon > span > div"
+        description: "Logo"
+      - selector: "#guide-renderer"
+        description: "Navigation"
+
   - name: Wikipedia
     url: https://www.wikipedia.org
-    load_timeout_ms: 4000
+    load_timeout_ms: 8000
     bot_detection_expected: false
     elements:
-      - selector: "#searchInput"
+      - selector: "input[type=search]"
         description: "Search input"
-      - selector: ".central-textlogo"
-        description: "Wikipedia logo"
-        
+      - selector: "#searchLanguage"
+        description: "Language selector"
+      - selector: "h1"
+        description: "Main heading"
+
   - name: GitHub
-    url: https://github.com
-    load_timeout_ms: 6000
+    url: https://www.github.com
+    load_timeout_ms: 8000
     bot_detection_expected: false
     elements:
-      - selector: "header"
-        description: "Main header"
-      - selector: "form.js-site-search-form"
-        description: "Search form"
+      - selector: "body > div.logged-in.env-production.page-responsive.full-width > div.position-relative.header-wrapper.js-header-wrapper"
+        description: "Nav"
+      - selector: "#_r_63_--label"
+        description: "Sign out"
+      - selector: "#dashboard > div > div.copilotPreview__container > react-partial > div > div > div.CopilotChatInputPartial-module__header__m_Kox > div > div:nth-child(1) > h2"
+        description: "Heading"
 
 native_apps:
   # Daksh fills this in his branch
+  - name: Calculator
+    binary: gnome-calculator
+    startup_timeout_ms: 5000
+
+  - name: Terminal
+    binary: qterminal
+    startup_timeout_ms: 5000
+
+  - name: File Manager
+    binary: pcmanfm-qt
+    startup_timeout_ms: 5000
+
+  - name: Text Editor
+    binary: featherpad
+    startup_timeout_ms: 5000
+
+  - name: Firefox
+    binary: firefox
+    startup_timeout_ms: 8000
+
+  - name: Google Chrome
+    binary: google-chrome
+    startup_timeout_ms: 8000
+
+  - name: LibreOffice Writer
+    binary: libreoffice
+    arguments:
+      - --writer
+    startup_timeout_ms: 8000
+
+  - name: LibreOffice Calc
+    binary: libreoffice
+    arguments:
+      - --calc
+    startup_timeout_ms: 8000
+
+  - name: LibreOffice Impress
+    binary: libreoffice
+    arguments:
+      - --impress
+    startup_timeout_ms: 8000
+
+  - name: Image Viewer
+    binary: lximage-qt
+    startup_timeout_ms: 5000
+
+  - name: Settings
+    binary: lxqt-config
+    startup_timeout_ms: 5000
+
+  - name: Process Viewer
+    binary: qps
+    startup_timeout_ms: 5000
+
+  - name: Notes
+    binary: feathernotes
+    startup_timeout_ms: 5000
+
+  - name: Audacious
+    binary: audacious
+    startup_timeout_ms: 5000
+
+  - name: Software Center
+    binary: snap-store
+    startup_timeout_ms: 8000
 
 desktop_presence:
   # Daksh fills this in his branch
+  - name: Calculator
+    desktop_file: org.gnome.Calculator.desktop
+    menu_category: Utility
+
+  - name: Terminal
+    desktop_file: qterminal.desktop
+    menu_category: System
+
+  - name: File Manager
+    desktop_file: pcmanfm-qt.desktop
+
+  - name: Text Editor
+    desktop_file: featherpad.desktop
+    menu_category: Utility
+
+  - name: Firefox
+    desktop_file: firefox.desktop
+    menu_category: Network
+
+  - name: Google Chrome
+    desktop_file: google-chrome.desktop
+    menu_category: Network
+
+  - name: LibreOffice Writer
+    desktop_file: libreoffice-writer.desktop
+    menu_category: Office
+
+  - name: LibreOffice Calc
+    desktop_file: libreoffice-calc.desktop
+    menu_category: Office
+
+  - name: LibreOffice Impress
+    desktop_file: libreoffice-impress.desktop
+    menu_category: Office
+
+  - name: Image Viewer
+    desktop_file: lximage-qt.desktop
+    menu_category: Graphics
+
+  - name: Settings
+    desktop_file: lxqt-config.desktop
+    menu_category: Settings
+
+  - name: Process Viewer
+    desktop_file: qps.desktop
+    menu_category: System
+
+  - name: Notes
+    desktop_file: feathernotes.desktop
+    menu_category: Utility
+
+  - name: Audacious
+    desktop_file: audacious.desktop
+    menu_category: AudioVideo
+
+  - name: Software Center
+    desktop_file: io.snapcraft.SessionAgent.desktop
