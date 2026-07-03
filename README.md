@@ -103,6 +103,18 @@ The logs are written in **JSON Lines (JSONL)** format, making them highly machin
 
 > **IMPORTANT:** `BLOCKED` is **NOT** a failure. It means a Jio-protected URL triggered expected bot detection in the headless browser. The LLM is explicitly trained to understand this distinction.
 
+## CI/CD Integration (Bonus Feature)
+
+The repository includes a production-ready **GitHub Actions Pipeline** (`.github/workflows/jiopc-agent-ci.yml`). 
+
+Whenever a Pull Request is opened against the `main` branch, the pipeline will automatically:
+1. Spin up an Ubuntu 24.04 runner.
+2. Build and install the `.deb` package dynamically.
+3. Run the full validation suite (Parts A, B, and C) inside a headless `xvfb` frame.
+4. Extract the LLM Analysis and **post it as a comment directly on the Pull Request** so engineers can immediately see if the patch is safe to promote.
+
+*(To enable this on your fork, simply add `LLM_API_KEY`, `LLM_MODEL`, and `LLM_BASE_URL` to your GitHub Repository Secrets).*
+
 ## Benchmarking
 
 To prove that the agent complies with the strict hackathon resource constraints (< 150MB RAM, < 20% CPU), run the included benchmark script:
