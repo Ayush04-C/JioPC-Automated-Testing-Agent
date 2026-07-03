@@ -96,6 +96,130 @@ web_apps:
 
 native_apps:
   # Daksh fills this in his branch
+  - name: Calculator
+    binary: gnome-calculator
+    startup_timeout_ms: 5000
+
+  - name: Terminal
+    binary: qterminal
+    startup_timeout_ms: 5000
+
+  - name: File Manager
+    binary: pcmanfm-qt
+    startup_timeout_ms: 5000
+
+  - name: Text Editor
+    binary: featherpad
+    startup_timeout_ms: 5000
+
+  - name: Firefox
+    binary: firefox
+    startup_timeout_ms: 8000
+
+  - name: Google Chrome
+    binary: google-chrome
+    startup_timeout_ms: 8000
+
+  - name: LibreOffice Writer
+    binary: libreoffice
+    arguments:
+      - --writer
+    startup_timeout_ms: 8000
+
+  - name: LibreOffice Calc
+    binary: libreoffice
+    arguments:
+      - --calc
+    startup_timeout_ms: 8000
+
+  - name: LibreOffice Impress
+    binary: libreoffice
+    arguments:
+      - --impress
+    startup_timeout_ms: 8000
+
+  - name: Image Viewer
+    binary: lximage-qt
+    startup_timeout_ms: 5000
+
+  - name: Settings
+    binary: lxqt-config
+    startup_timeout_ms: 5000
+
+  - name: Process Viewer
+    binary: qps
+    startup_timeout_ms: 5000
+
+  - name: Notes
+    binary: feathernotes
+    startup_timeout_ms: 5000
+
+  - name: Audacious
+    binary: audacious
+    startup_timeout_ms: 5000
+
+  - name: Software Center
+    binary: snap-store
+    startup_timeout_ms: 8000
 
 desktop_presence:
   # Daksh fills this in his branch
+  - name: Calculator
+    desktop_file: org.gnome.Calculator.desktop
+    menu_category: Utility
+
+  - name: Terminal
+    desktop_file: qterminal.desktop
+    menu_category: System
+
+  - name: File Manager
+    desktop_file: pcmanfm-qt.desktop
+    menu_category: System
+
+  - name: Text Editor
+    desktop_file: featherpad.desktop
+    menu_category: Utility
+
+  - name: Firefox
+    desktop_file: firefox.desktop
+    menu_category: Network
+
+  - name: Google Chrome
+    desktop_file: google-chrome.desktop
+    menu_category: Network
+
+  - name: LibreOffice Writer
+    desktop_file: libreoffice-writer.desktop
+    menu_category: Office
+
+  - name: LibreOffice Calc
+    desktop_file: libreoffice-calc.desktop
+    menu_category: Office
+
+  - name: LibreOffice Impress
+    desktop_file: libreoffice-impress.desktop
+    menu_category: Office
+
+  - name: Image Viewer
+    desktop_file: lximage-qt.desktop
+    menu_category: Graphics
+
+  - name: Settings
+    desktop_file: lxqt-config.desktop
+    menu_category: Settings
+
+  - name: Process Viewer
+    desktop_file: qps.desktop
+    menu_category: System
+
+  - name: Notes
+    desktop_file: feathernotes.desktop
+    menu_category: Utility
+
+  - name: Audacious
+    desktop_file: audacious.desktop
+    menu_category: AudioVideo
+
+  - name: Software Center
+    desktop_file: io.snapcraft.SessionAgent.desktop
+    menu_category: System
