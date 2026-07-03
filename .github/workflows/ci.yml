@@ -52,7 +52,7 @@ jobs:
 
       - name: Find log file
         run: |
-          LOG_FILE=$(ls -t ~/.local/share/jiopc/agent/test_run_*.log 2>/dev/null | head -1)
+          LOG_FILE=$(ls -t ~/.local/share/jiopc/agent/*.jsonl 2>/dev/null | head -1)
           if [ -z "$LOG_FILE" ]; then
             echo "ERROR: No log file found"
             exit 1
