@@ -69,7 +69,11 @@ def main() -> None:
     logger.write_summary()
     
     if args.analyse:
-        run_analysis(logger.log_path)
+        result = run_analysis(logger.log_path)
+        print("\n" + "="*60)
+        print("LLM ANALYSIS RESULT")
+        print("="*60)
+        print(result)
         
     sys.exit(0 if total_failures == 0 else 1)
 
