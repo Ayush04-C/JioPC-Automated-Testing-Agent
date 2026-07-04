@@ -12,7 +12,7 @@ agent:
 
 web_apps:
   - name: JioSaavn
-    url: https://www.jiosaavn.com
+    url: https://www.jiosaavn-CI-TEsting.com
     load_timeout_ms: 8000
     bot_detection_expected: true
     elements:
