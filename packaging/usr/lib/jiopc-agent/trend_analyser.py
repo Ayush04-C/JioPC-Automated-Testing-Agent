@@ -189,8 +189,9 @@ def run_trend_analysis(log_path: str) -> TrendReport:
     Process a new test run log, update history, and detect trends.
     """
     try:
+        log_path_str = str(log_path)
         history = _load_history()
-        history = _add_run_to_history(history, log_path)
+        history = _add_run_to_history(history, log_path_str)
         _save_history(history)
         
         runs = history.get("runs", [])
