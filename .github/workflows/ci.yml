@@ -78,6 +78,12 @@ jobs:
           LLM_MODEL: ${{ env.LLM_MODEL }}
           LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
         continue-on-error: true
+        
+      - name: Run Trend Analysis
+        run: |
+          python3 src/trend_analyser.py --log "$LOG_FILE" \
+          >> /tmp/analysis_output.txt 2>&1
+        continue-on-error: true
 
       - name: Extract test summary
         run: |
