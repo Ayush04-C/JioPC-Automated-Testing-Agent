@@ -95,8 +95,13 @@ If you prefer not to use a `.env` file, you can `export` these variables directl
 
 The agent can automatically email the final LLM report (Executive Summary and PROMOTE/HOLD recommendation) to administrators using SMTP.
 
-1. **Configure YAML:** Open `config/jiopc-agent.yaml` and set your sender/receiver email addresses in the `agent.email` block.
-2. **Set Password:** Add your SMTP password (e.g. Gmail App Password) to your `.env` file:
+1. **Configure YAML:** Open `config/jiopc-agent.yaml` and update the email block (lines 9-11) with your actual email addresses:
+```yaml
+    smtp_user: your_email@gmail.com   # <--- Change Line 9 to the email address you are sending FROM
+    to_address: admin@jiopc.com       # <--- Change Line 10 to the email address you want to RECEIVE the report
+    from_address: agent@jiopc.com     # <--- Change Line 11 to the same address as Line 9
+```
+2. **Set Password:** Add your SMTP password (e.g. your 16-character Gmail App Password) to your `.env` file:
 ```env
 SMTP_PASS="your_16_char_app_password"
 ```
