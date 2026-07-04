@@ -28,7 +28,7 @@ The `jiopc-testing-agent` solves this by providing a unified, automated validati
                             │
 ┌───────────────────────────▼────────────────────────────┐
 │                  JSONL File Logger                     │
-│  Writes → ~/.local/share/jiopc/agent/test_run_*.log    │
+│  Writes → ~/.local/share/jiopc/agent/log_*.jsonl       │
 └───────────────────────────┬────────────────────────────┘
                             │
              ┌──────────────┴──────────────┐
