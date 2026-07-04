@@ -12,6 +12,7 @@ from desktop_auditor import run_desktop_audit
 from logger import Logger
 from web_tester import run_web_tests
 from mailer import send_summary_email
+from trend_analyser import run_trend_analysis, format_trend_report
 
 def parse_args() -> argparse.Namespace:
     """Parses command line arguments."""
@@ -70,11 +71,19 @@ def main() -> None:
     logger.write_summary()
     
     if args.analyse:
+        # 1. Run LLM Analysis
         result = run_analysis(logger.log_path)
         print("\n" + "="*60)
         print("LLM ANALYSIS RESULT")
         print("="*60)
         print(result)
+        
+        # 2. Run Trend Analysis
+        print("\n")
+        trend_report = run_trend_analysis(logger.log_path)
+        print(format_trend_report(trend_report))
+        
+        # 3. Send Summary Email
         send_summary_email(config, result)
         
     sys.exit(0 if total_failures == 0 else 1)
