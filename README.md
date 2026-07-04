@@ -2,6 +2,36 @@
 
 An automated validation suite that verifies web apps, native apps, and desktop presence after a JioPC OS Image patch, complete with LLM-powered diagnostic reporting.
 
+## Bonus Challenges Completed
+
+We have successfully implemented **all three** optional bonus challenges for this hackathon:
+1. **Email Summary Dispatcher:** Automatically emails the final AI recommendation (PROMOTE/HOLD) to administrators.
+2. **Historical Trend Analysis:** Stores past runs locally and flags regressions (e.g. PASS → FAIL) across consecutive patches.
+3. **CI/CD Integration:** Includes a GitHub Actions pipeline that builds the `.deb`, runs headless tests, and auto-comments the LLM analysis directly on Pull Requests.
+
+## Hackathon Requirements Checklist
+
+| Requirement | Status |
+|-------------|:------:|
+| `.deb` installs cleanly on fresh Ubuntu 24.04 VM without errors | Yes |
+| Agent starts from terminal with a single command and exits cleanly | Yes |
+| **Part A:** headless browser tests run and complete without a visible window | Yes |
+| **Part A:** element presence checks execute per YAML definition | Yes |
+| **Part A:** `BLOCKED` result correctly logged for a bot-detection page | Yes |
+| **Part B:** `.desktop` and binary existence verified for all native apps | Yes |
+| **Part B:** apps launched; process presence confirmed within timeout | Yes |
+| **Part B:** all launched apps terminated cleanly after health check | Yes |
+| **Part B:** benchmark report includes agent-added overhead per app | Yes |
+| **Part C:** all 15 apps checked against YAML-defined desktop folder | Yes |
+| **Part C:** all 15 apps checked against YAML-defined start menu category | Yes |
+| **Part C:** `MISSING` and `MISPLACED` results distinguished in log | Yes |
+| Log file written to `~/.local/share/jiopc/agent/` with documented format | Yes |
+| Log summary block at end of log with per-component breakdown | Yes |
+| `analyse.py` runs against log; LLM returns PROMOTE / HOLD analysis | Yes |
+| Agent CPU < 20% sustained; RAM < 150 MB during run | Yes |
+| Full test run completes in < 5 minutes | Yes |
+| No modifications to system files; no root required at runtime | Yes |
+
 ## Dependencies & Setup
 
 The agent is designed to run on **Ubuntu 24.04** (or any Debian-based system) and uses standard Linux utilities.
