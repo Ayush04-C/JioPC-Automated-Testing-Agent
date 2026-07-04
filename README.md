@@ -32,17 +32,17 @@ Once installed, the agent registers a global command on your system (`jiopc-agen
 
 **Run the full test suite and LLM analysis in one step:**
 ```bash
-jiopc-agent --config /usr/lib/jiopc-agent/config/jiopc-agent.yaml --analyse
+jiopc-agent --analyse
 ```
 
-**Run only a specific part (e.g., Part B - Native Apps):**
+**Run only a specific part (e.g., Part A - Web Apps):**
 ```bash
-jiopc-agent --config /usr/lib/jiopc-agent/config/jiopc-agent.yaml --part B
+jiopc-agent --part A
 ```
 
 **Run a specific part AND generate an AI report for it:**
 ```bash
-jiopc-agent --config /usr/lib/jiopc-agent/config/jiopc-agent.yaml --part B --analyse
+jiopc-agent --part A --analyse
 ```
 
 ## How to Configure the LLM Analysis
@@ -121,14 +121,21 @@ After each test run, `trend_analyser.py` stores a summary in `~/.local/share/jio
 
 ### How to Run Trend Analysis
 
+Trend analysis is now natively integrated into the agent! You no longer need to run a separate script.
+
+Simply pass the `--analyse` flag when running the agent, and the Trend Analysis Report will automatically be generated and printed right beneath the LLM report.
+
 ```bash
-# After running the main agent:
-python3 src/trend_analyser.py \
-  --log ~/.local/share/jiopc/agent/test_run_<timestamp>.log
+jiopc-agent --part A --analyse
 ```
 
 **First run output:**
 ```text
+============================================================
+TREND ANALYSIS REPORT
+Runs analysed: 1 (max history: 5)
+============================================================
+
 First run recorded. Baseline established. No trend data yet.
 ```
 
