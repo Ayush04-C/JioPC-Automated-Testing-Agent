@@ -9,7 +9,7 @@ The `jiopc-testing-agent` solves this by providing a unified, automated validati
 ## 2. Architecture Diagram
 
 ```text
-[ ENGINEER TERMINAL ]
+[ ENGINEER TERMINAL OR CI/CD PIPELINE ]
          │
          ▼  (jiopc-agent --config jiopc-agent.yaml --analyse)
 ┌────────────────────────────────────────────────────────┐
@@ -21,26 +21,33 @@ The `jiopc-testing-agent` solves this by providing a unified, automated validati
 ┌──────▼─────┐       ┌──────▼─────┐       ┌──────▼─────┐
 │   Part A   │       │   Part B   │       │   Part C   │
 │ web_tester │       │ app_health │       │desktop_aud │
-│ (Playwright│       │  (psutil)  │       │  (PyXDG)   │
+│(Playwright)│       │  (psutil)  │       │  (PyXDG)   │
 └──────┬─────┘       └──────┬─────┘       └──────┬─────┘
        │                    │                    │
        └────────────────────┼────────────────────┘
                             │
 ┌───────────────────────────▼────────────────────────────┐
 │                  JSONL File Logger                     │
-│  Writes → ~/.local/share/jiopc/agent/test_run_*.log    │
+│  Writes → ~/.local/share/jiopc/agent/log_*.jsonl       │
 └───────────────────────────┬────────────────────────────┘
                             │
-┌───────────────────────────▼────────────────────────────┐
-│                 analyse.py (LLM Layer)                 │
-│                                                        │
-│ Reads: 1. Log File   2. prompts/analyse_log.txt        │
-│                                                        │
-│ Invokes LLM via API (OpenAI / BharatCode / Gemini)     │
+             ┌──────────────┴──────────────┐
+             ▼                             ▼
+┌─────────────────────────┐   ┌──────────────────────────┐
+│ analyse.py (LLM Layer)  │   │ trend_analyser.py (Hist) │
+│ Reads JSONL + Prompt    │   │ Reads history.json       │
+│ Returns PROMOTE/HOLD    │   │ Detects Regressions      │
+└────────────┬────────────┘   └────────────┬─────────────┘
+             │                             │
+             └──────────────┬──────────────┘
+                            ▼
+┌────────────────────────────────────────────────────────┐
+│               mailer.py (SMTP Dispatcher)              │
+│       Emails the combined analysis to Admins           │
 └───────────────────────────┬────────────────────────────┘
                             │
                             ▼
-           [ TERMINAL OUTPUT: PROMOTE or HOLD ]
+           [ TERMINAL OUTPUT OR GITHUB PR COMMENT ]
 ```
 
 ## 3. Component Design
@@ -49,6 +56,7 @@ The `jiopc-testing-agent` solves this by providing a unified, automated validati
 * **What it does:** Uses a headless Chromium browser to navigate to Jio web application URLs, verifying HTTP status codes and ensuring the correct visual elements (nav bars, logos) render in the DOM. Handles bot-detection interceptions securely.
 * **Key design decision:** We use Playwright over Selenium because Playwright handles JavaScript-heavy Single Page Applications (SPAs) dynamically, preventing false-negative "missing element" errors caused by race conditions.
 * **Input/Output:** Reads `web_apps` from the YAML config. Outputs JSON lines containing `PASS`, `FAIL`, or `BLOCKED`.
+* **Bot Protection Handling:** Cloudflare and WAF protections on Jio domains actively block headless browsers. The agent elegantly detects `403`/`429` or challenge pages and flags them as `BLOCKED` rather than `FAIL`, preventing false-positive regressions in headless CI pipelines.
 
 ### Part B: Native App Health (`app_health.py`)
 * **What it does:** Launches native desktop applications inside an isolated `Xvfb` display server. Monitors the process tree for crashes, timeouts, or unexpected terminations.
@@ -70,11 +78,20 @@ The `jiopc-testing-agent` solves this by providing a unified, automated validati
 * **Key design decision:** Uses environment variables (`LLM_BASE_URL`) to allow seamless hot-swapping between different AI providers (OpenAI, Groq, local Ollama) without changing code, ensuring zero vendor lock-in.
 * **Input/Output:** Takes a log file path. Outputs a Markdown-formatted diagnostic report.
 
+### Trend Analyser (`trend_analyser.py`) (Bonus)
+* **What it does:** Maintains a rolling history of the last 5 test runs in `history.json`. Compares the current run against the previous run to explicitly identify regressions (e.g. PASS → FAIL), recoveries, and consistent failures.
+* **Key design decision:** Trend data survives across VM reassignments because it is written to the user's NFS-mounted `~/.local/share/jiopc/agent/` directory, directly supporting JioPC's floating VM architecture.
+
+### SMTP Mailer (`mailer.py`) (Bonus)
+* **What it does:** Dispatches the final LLM report directly to designated administrator emails using SMTP.
+* **Key design decision:** Highly configurable via the YAML configuration file and `.env` password integration to prevent credential leakage.
+
 ## 4. YAML Schema
 
 All test rules are governed by a central, zero-code YAML file. 
 
 * **`agent` fields:** Core configurations (e.g., `log_retention_days`).
+* **`email` fields:** Target addresses and SMTP routing details for the notification dispatcher.
 * **`web_apps` fields (Part A):**
   * `name`: Display name of the web application.
   * `url`: The target URL to test.
@@ -95,6 +112,7 @@ All test rules are governed by a central, zero-code YAML file.
 * **OpenAI SDK with base_url:** Ensures the LLM analysis component is model-agnostic. We can point it to any provider serving an OpenAI-compatible spec (which is currently the industry standard).
 * **JSON Lines (JSONL) Log Format:** Each line is independently parseable. This allows streaming, prevents catastrophic log corruption if a test crashes mid-write, and is extremely easy for LLMs to read.
 * **YAML Config:** Highly human-readable, allows for inline comments, and supports multi-document files. It centralizes test parameters so that QA testers can add tests without touching Python code.
+* **GitHub Actions (CI/CD Bonus):** Provides seamless, event-driven CI/CD integration. We trigger the full agent automatically on PRs, catching broken code and bot-protection blocks before they hit `main`.
 
 ## 6. Constraints
 
